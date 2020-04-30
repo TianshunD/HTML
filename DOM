@@ -1,0 +1,233 @@
+DOM
+概念： Document Object Model 文档对象模型
+	* 将标记语言文档的各个组成部分，封装为对象。可以使用这些对象，对标记语言文档进行CRUD的动态操作
+
+* W3C DOM 标准被分为 3 个不同的部分：
+
+	* 核心 DOM - 针对任何结构化文档的标准模型
+		* Document：文档对象
+		* Element：元素对象
+		* Attribute：属性对象
+		* Text：文本对象
+		* Comment:注释对象
+
+		* Node：节点对象，其他5个的父对象
+	* XML DOM - 针对 XML 文档的标准模型
+	* HTML DOM - 针对 HTML 文档的标准模型
+
+1. 获取Element对象：
+	1. getElementById()	： 根据id属性值获取元素对象。id属性值一般唯一
+	2. getElementsByTagName()：根据元素名称获取元素对象们。返回值是一个数组
+	3. getElementsByClassName():根据Class属性值获取元素对象们。返回值是一个数组
+	4. getElementsByName(): 根据name属性值获取元素对象们。返回值是一个数组
+	
+document.getElementsByTagName("div"); //获取所有div对象
+
+2. 创建其他DOM对象：
+	createAttribute(name)
+	createComment()
+	createElement()
+	createTextNode()
+
+//Element	
+<a>click to see</a>
+    <script>
+        element = document.getElementsByTagName("a")[0];
+        element.setAttribute("href", "http://www.baidu.com"); //添加属性
+        element.removeAttribute("href"); //移除属性
+    </script>
+	
+//Node
+<div id="div1"> //是div2父节点
+        <div id="div2">cass</div> //是div1子节点
+    </div>
+
+    <input type="button" id="remove" value="remove"> //使用<a>实现，javascript:void(0)，阻止返回值        <a href="javascript:void(0);" id="link">click to remove</a>   alink.onclick = fun;
+
+    <script>
+        btn = document.getElementById("remove");
+        function fun() {
+            div1 = document.getElementById("div1");
+            div1.removeChild(document.getElementById("div2"));
+        }
+        btn.onclick = fun;
+    </script>
+	
+element_add.onclick = function(){
+	var div1 = document.getElementById("div1");
+   //给div1添加子节点
+	//创建div节点
+	var div3 = document.createElement("div");
+	div3.setAttribute("id","div3");
+
+	div1.appendChild(div3);
+}
+
+//获取父节点 parentNode
+div2 = document.getElementById("div2");
+div1 = div2.parentNode; //[object HTMLDivElement]
+alert(div1);
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Table</title>
+
+    <style>
+        table{
+            border: 1px solid;
+            margin: auto;
+            width: 500px;
+        }
+
+        td,th{
+            text-align: center;
+            border: 1px solid;
+        }
+        div{
+            text-align: center;
+            margin: 50px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div>
+    <input type="text" id="id" placeholder="Pls type your id">
+    <input type="text" id="name"  placeholder="Pls type your name">
+    <input type="text" id="gender"  placeholder="Pls type your gender">
+    <input type="button" value="Add" id="btn_add">
+
+</div>
+
+
+<table>
+    <caption>Student Info</caption>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>gender</th>
+        <th>action</th>
+    </tr>
+
+    <tr>
+        <td>1</td>
+        <td>cass</td>
+        <td>male</td>
+        <td><a href="javascript:void(0);" onclick="delTr(this);">delete</a></td>
+    </tr>
+
+    <tr>
+        <td>2</td>
+        <td>dean</td>
+        <td>male</td>
+        <td><a href="javascript:void(0);" onclick="delTr(this);">delete</a></td>
+    </tr>
+
+    <tr>
+        <td>3</td>
+        <td>mary</td>
+        <td>female</td>
+        <td><a href="javascript:void(0);" onclick="delTr(this);" >delete</a></td>
+    </tr>
+
+
+</table>
+
+
+<script>
+
+    //1.获取按钮
+   document.getElementById("btn_add").onclick = function(){
+        //2.获取文本框的内容
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("name").value;
+        var gender = document.getElementById("gender").value;
+
+        //3.创建td，赋值td的标签体
+        //id 的 td
+        var td_id = document.createElement("td");
+        var text_id = document.createTextNode(id);
+        td_id.appendChild(text_id);
+        //name 的 td
+        var td_name = document.createElement("td");
+        var text_name = document.createTextNode(name);
+        td_name.appendChild(text_name);
+        //gender 的 td
+        var td_gender = document.createElement("td");
+        var text_gender = document.createTextNode(gender);
+        td_gender.appendChild(text_gender);
+        //a标签的td
+        var td_a = document.createElement("td");
+        var ele_a = document.createElement("a");
+        ele_a.setAttribute("href","javascript:void(0);");
+        ele_a.setAttribute("onclick","delTr(this);");
+        var text_a = document.createTextNode("删除");
+        ele_a.appendChild(text_a);
+        td_a.appendChild(ele_a);
+
+        //4.创建tr
+        var tr = document.createElement("tr");
+        //5.添加td到tr中
+        tr.appendChild(td_id);
+        tr.appendChild(td_name);
+        tr.appendChild(td_gender);
+        tr.appendChild(td_a);
+        //6.获取table
+        var table = document.getElementsByTagName("table")[0];
+        table.appendChild(tr);
+    }
+
+
+
+    //删除方法
+    function delTr(obj){
+        var table = obj.parentNode.parentNode.parentNode;
+        var tr = obj.parentNode.parentNode;
+
+        table.removeChild(tr);
+    }
+
+
+</script>
+
+</body>
+</html>
+
+//HTML DOM
+var div1 = document.getElementById("div1");
+div1.innerHTML = "<input type='button' value='button'>"; //替换文本输入框
+div1.innerHTML += "<input type='button' value='button'>"; //追加文本输入框
+
+
+
+
+//使用innerHTML添加
+    document.getElementById("btn_add").onclick = function() {
+        //获取文本框的内容
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("name").value;
+        var gender = document.getElementById("gender").value;
+
+        //获取table
+        var table = document.getElementsByTagName("table")[0];
+
+        //追加一行
+        table.innerHTML += "<tr>\n" +
+            "        <td>"+id+"</td>\n" +
+            "        <td>"+name+"</td>\n" +
+            "        <td>"+gender+"</td>\n" +
+            "        <td><a href=\"javascript:void(0);\" onclick=\"delTr(this);\" >delete</a></td>\n" +
+            "    </tr>";
+    }
+	
+//控制DOM样式
+div1.style.border = "1px solid red";
+div1.style.width = "200px";
+//font-size--> fontSize
+div1.style.fontSize = "20px";
+
+//提前定义好类选择器的样式，通过元素的className属性来设置其class属性值
+div1.className = "d1";

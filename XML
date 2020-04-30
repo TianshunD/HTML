@@ -1,0 +1,246 @@
+XML
+1. 概念
+Extensible Markup Language 可扩展标记语言
+* 可扩展：标签都是自定义的。 <user>  <student>
+
+* 功能
+	* 存储数据
+		1. 配置文件
+		2. 在网络中传输
+
+2. 语法
+* 基本语法：
+	1. xml文档的后缀名 .xml
+	2. xml第一行必须定义为文档声明
+	3. xml文档中有且仅有一个根标签
+	4. 属性值必须使用引号(单双都可)引起来
+	5. 标签必须正确关闭
+	6. xml标签名称区分大小写
+
+<?xml version='1.0'?>
+<users>
+	<user id='1'>
+		<name>cass</name>
+		<age>20</age>
+		<gender>male</gender>
+	</user>
+	
+	<user id='2'>
+		<name>mary</name>
+		<age>22</age>
+		<gender>female</gender>
+	</user>
+</users>
+
+a.css
+name {
+    color: red;
+}
+
+<?xml-stylesheet type='text/css' href='a.css'?>
+
+文本：
+* CDATA区：在该区域中的数据会被原样展示，不需要转义字符
+	* 格式：  <![CDATA[...]]>
+	
+约束：规定xml文档的书写规则
+* 作为框架的使用者(程序员)：
+	1. 能够在xml中引入约束文档
+	2. 能够简单的读懂约束文档
+
+* 分类：
+	1. DTD:一种简单的约束技术
+
+student.dtd
+<!ELEMENT students (student*) >
+<!ELEMENT student (name,age,sex)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT age (#PCDATA)>
+<!ELEMENT sex (#PCDATA)>
+<!ATTLIST student number ID #REQUIRED>
+
+student.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE students SYSTEM "student.dtd">
+
+<students>
+	<student number="stu1">
+		<name>cass</name>
+		<age>23</age>
+		<sex>male</sex>
+	</student>
+</students>
+
+	2. Schema:一种复杂的约束技术
+
+stu.xsd	
+<?xml version="1.0"?>
+<xsd:schema xmlns="http://www.itcast.cn/xml"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.itcast.cn/xml" elementFormDefault="qualified">
+    <xsd:element name="students" type="studentsType"/>
+    <xsd:complexType name="studentsType">
+        <xsd:sequence>
+            <xsd:element name="student" type="studentType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="studentType">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="age" type="ageType" />
+            <xsd:element name="sex" type="sexType" />
+        </xsd:sequence>
+        <xsd:attribute name="number" type="numberType" use="required"/>
+    </xsd:complexType>
+    <xsd:simpleType name="sexType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="male"/>
+            <xsd:enumeration value="female"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ageType">
+        <xsd:restriction base="xsd:integer">
+            <xsd:minInclusive value="0"/>
+            <xsd:maxInclusive value="256"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="numberType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="stu_\d{4}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema> 
+
+stu.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+	1.填写xml文档的根元素
+	2.引入xsi前缀.  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	3.引入xsd文件命名空间.  xsi:schemaLocation="http://www.itcast.cn/xml  student.xsd"
+	4.为每一个xsd约束声明一个前缀,作为标识  xmlns="http://www.itcast.cn/xml" 
+	
+	
+ -->
+ <students   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 			 xmlns="http://www.itcast.cn/xml" 
+ 		   xsi:schemaLocation="http://www.itcast.cn/xml  student.xsd"
+ 		    >
+ 	<student number="stu_0001">
+ 		<name>tom</name>
+ 		<age>18</age>
+ 		<sex>male</sex>
+ 	</student>
+		 
+ </students>
+
+3. 解析XML
+* 操作xml文档
+	1. 解析(读取)：将文档中的数据读取到内存中
+	2. 写入：将内存中的数据保存到xml文档中。持久化的存储
+
+* 解析xml的方式：
+	1. DOM：将标记语言文档一次性加载进内存，在内存中形成一颗dom树
+		* 优点：操作方便，可以对文档进行CRUD的所有操作
+		* 缺点：占内存
+	2. SAX：逐行读取，基于事件驱动的。
+		* 优点：不占内存。
+		* 缺点：只能读取，不能增删改
+* xml常见的解析器：
+	1. JAXP：sun公司提供的解析器，支持dom和sax两种思想
+	2. DOM4J：一款非常优秀的解析器
+	3. Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
+	4. PULL：Android操作系统内置的解析器，sax方式的。
+	
+Jsoup
+1. Jsoup：工具类，可以解析html或xml文档，返回Document
+parse​(File in, String charsetName)
+public class Jsoup1 {
+    public static void main(String[] args) throws IOException {
+        //获取src目录下的文件路径
+        String path = Jsoup1.class.getClassLoader().getResource("student.xml").getPath();
+        System.out.println(path);
+
+        //获取DOM树
+        Document dom = Jsoup.parse(new File(path), "utf-8");
+        Elements names = dom.getElementsByTag("name");
+        System.out.println(names.size()); //1
+
+        Element element = names.get(0);
+        System.out.println(element.text()); //tom
+
+    }
+}
+
+parse​(String html)
+
+parse​(URL url, int timeoutMillis)
+URL url = new URL("https://www.baidu.com/");
+        Document doc = Jsoup.parse(url, 10000);
+        System.out.println(doc);
+		
+2. Document：文档对象。代表内存中的dom树
+Elements：元素Element对象的集合。可以当做 ArrayList<Element>来使用
+getElementById​(String id)
+getElementsByTag​(String tagName)
+getElementsByAttribute​(String key)
+getElementsByAttributeValue​(String key, String value)
+
+<student number="stu_1">
+ 		<name id="stu1">tom</name>
+ 		<age>18</age>
+ 		<sex>male</sex>
+ 	</student>
+Elements eles = dom.getElementsByAttribute("id");
+System.out.println(eles); //<name id="stu1"> tom </name>
+
+Elements eles = dom.getElementsByAttributeValue("id", "stu1");
+
+3. Element：元素对象
+	1. 获取子元素对象
+		* getElementById​(String id)：根据id属性值获取唯一的element对象
+		* getElementsByTag​(String tagName)：根据标签名称获取元素对象集合
+		* getElementsByAttribute​(String key)：根据属性名称获取元素对象集合
+		* getElementsByAttributeValue​(String key, String value)：根据对应的属性名和属性值获取元素对象集合
+
+	2. 获取属性值
+		* String attr(String key)：根据属性名称获取属性值
+	3. 获取文本内容
+		* String text():获取文本内容
+		* String html():获取标签体的所有内容(包括字标签的字符串内容)
+
+Element stu1 = dom.getElementById("stu1");		
+stu1.attr("id"); //stu1
+
+===========================================================================================================
+* 快捷查询方式：
+	1. selector:选择器
+		* 使用的方法：Elements	select​(String cssQuery)
+			* 语法：参考Selector类中定义的语法
+			
+Elements name = document.select("name");
+System.out.println(name); //<name id="stu1">tom</name> <name>dean</name>	
+
+Elements name = document.select("#stu1");
+System.out.println(name); //<name id="stu1">tom</name>	
+
+Elements elements2 = document.select("student[number=\"stu_1\"]");
+Elements elements3 = document.select("student[number=\"stu_1\"] > age"); //获取number = stu_1下的age子标签
+
+
+	2. XPath：XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言
+	
+//根据document对象，创建JXDocument对象
+        JXDocument jxDocument = new JXDocument(document);
+
+        List<JXNode> jxNodes = jxDocument.selN("//student"); //获取所有标签为student的node
+        for (JXNode i : jxNodes) {
+            System.out.println(i);
+        }
+		
+		List<JXNode> jxNodes2 = jxDocument.selN("//student/name"); //获取所有标签为student的node下的name标签
+		
+		//查询student标签下带有id属性的name标签
+		List<JXNode> jxNodes3 = jxDocument.selN("//student/name[@id]");
+		
+		//查询student标签下带有id属性的name标签 并且id属性值为itcast
+		List<JXNode> jxNodes4 = jxDocument.selN("//student/name[@id='itcast']");

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in Page</title>
+    <style>
+        body {
+            background-image: url('image/banner_1.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        * { /*默认所有元素内外边距为0，紧密相连*/
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .outer {
+            width: 900px;
+            height: 500px;
+            border: 8px #EEEEEE solid;
+            background-color: white;
+            margin: 10% auto auto;
+            padding: 30px;
+        }
+
+        .left {
+            float: left;
+
+        }
+
+        .p1 {
+            font-size: 20px;
+            color: #FFD026;
+        }
+
+        .p2 {
+            color: #A6A6A6;
+            font-size: 20px;
+        }
+
+
+
+
+        .center {
+            float: left;
+
+
+        }
+
+        .form {
+            margin-left: 40px;
+            margin-top: 20px;
+
+        }
+
+        .td_left {
+            width: 100px;
+            height: 45px;
+            text-align: right;
+        }
+
+        .td_right {
+            padding-left: 20px; /*格子里面的文本框*/
+        }
+
+        #username, #password, #birthday, #email, #tel, #checkcode {
+            width: 250px;
+            height: 30px;
+            border: 2px solid #A6A6A6;
+            padding-left: 10px;
+            border-radius: 5px;
+        }
+
+        #checkcode {
+            width: 130px;
+        }
+
+        #checkImg {
+            height: 32px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        #button {
+            width: 150px;
+            height: 40px;
+            background-color: #FFD026;
+            border-radius: 5px;
+        }
+
+
+
+
+        .right {
+            float: right;
+        }
+
+        .right p {
+            font-size: 16px;
+        }
+
+        .right p a {
+            color: pink;
+        }
+    </style>
+
+</head>
+<body background="">
+    <div class="outer">
+        <div class="left">
+            <p class="p1">New User?</p>
+            <p class="p2">Create Account</p>
+        </div>
+        <div class="center">
+            <div class="form">
+                <form action="#" method="post">
+                    <table>
+                        <tr>
+                            <td class="td_left"><label for="username">Username</label></td>
+                            <td class="td_right"><input type="text" name="username" id="username" placeholder="Type your username"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left"><label for="password">Password</label></td>
+                            <td class="td_right"><input type="password" name="password" id="password" placeholder="Type your password"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left"><label for="email">Email</label></td>
+                            <td class="td_right"><input type="email" name="email" id="email" placeholder="Type your email"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left"><label for="tel">Phone</label></td>
+                            <td class="td_right"><input type="text" name="tel" id="tel" placeholder="Type your phone number"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left"><label>Gender</label></td>
+                            <td class="td_right"><input type="radio" name="gender" value="male"> Male
+                                <input type="radio" name="gender" value="female"> Female
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left"><label for="birthday">Birthday</label></td>
+                            <td class="td_right"><input type="date" name="birthday" id="birthday" placeholder="Type your birthday"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left"><label for="checkcode">Verify Code</label></td>
+                            <td class="td_right"><input type="text" name="checkcode" id="checkcode" placeholder="Please verify">
+                                <img id="checkImg" src="image/verify_code.jpg" alt="verify image">
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2" align="center"><input type="submit" id="button" value="注册"></td>
+                        </tr>
+                    </table>
+
+
+                </form>
+            </div>
+        </div>
+        <div class="right">
+            <p>Already has an account?&nbsp;&nbsp;<a href="#">Sign in</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,448 @@
+//Event
+1. 点击事件：
+	1. onclick：单击事件
+	2. ondblclick：双击事件
+2. 焦点事件
+	1. onblur：失去焦点
+	2. onfocus:元素获得焦点。
+
+3. 加载事件：
+	1. onload：一张页面或一幅图像完成加载。
+
+4. 鼠标事件：
+	1. onmousedown	鼠标按钮被按下。
+	2. onmouseup	鼠标按键被松开。
+	3. onmousemove	鼠标被移动。
+	4. onmouseover	鼠标移到某元素之上。
+	5. onmouseout	鼠标从某元素移开。
+	
+	
+5. 键盘事件：
+	1. onkeydown	某个键盘按键被按下。	
+	2. onkeyup		某个键盘按键被松开。
+	3. onkeypress	某个键盘按键被按下并松开。
+
+6. 选择和改变
+	1. onchange	域的内容被改变。
+	2. onselect	文本被选中。
+
+7. 表单事件：
+	1. onsubmit	确认按钮被点击。
+	2. onreset	重置按钮被点击。
+	
+window.onload = function() {}
+
+
+function checkForm(){
+            return true;
+        }
+
+//onsubmit 可以检验和阻止表单提交
+document.getElementById("form").onsubmit = function(){
+	//校验用户名格式是否正确
+	var flag = false;
+
+
+	return flag;
+}
+
+<form action="#" id="form">
+<input name="username" id="username">
+
+<select id="city">
+    <option>--请选择--</option>
+    <option>北京</option>
+    <option>上海</option>
+    <option>西安</option>
+</select>
+<input type="submit" value="提交">
+</form>
+</body>
+</html>
+
+//========================
+function checkForm(){
+            return true;
+        }
+
+/*内部逻辑
+    function fun(){
+       return  checkForm(); 
+    }
+
+*/
+
+<form action="#" id="form" onclick="return checkForm();">
+<input name="username" id="username">
+
+//案例 表格全选
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table Selection</title>
+    <style>
+        * {
+            font-size: 20px;
+        }
+
+        table{
+            border: 1px solid;
+            width: 500px;
+            margin-left: 30%;
+        }
+
+        td,th{
+            text-align: center;
+            border: 1px solid;
+        }
+        div{
+            margin-top: 10px;
+            margin-left: 30%;
+        }
+
+        .over{
+            background-color: red;
+        }
+        .out{
+            background-color: white;
+        }
+    </style>
+
+    <script>
+
+        window.onload  = function(){ //先等页面加载完
+            document.getElementById("selectAll").onclick = function(){
+                var cbs = document.getElementsByName("cb");
+                //遍历所有checkBox
+                for (var i = 0; i < cbs.length; i++) {
+                    cbs[i].checked = true;
+                }
+
+            }
+
+            document.getElementById("unSelectAll").onclick = function(){
+                var cbs = document.getElementsByName("cb");
+                for (var i = 0; i < cbs.length; i++) {
+                    cbs[i].checked = false;
+                }
+
+            }
+
+            document.getElementById("selectRev").onclick = function(){
+                var cbs = document.getElementsByName("cb");
+                for (var i = 0; i < cbs.length; i++) {
+                    cbs[i].checked = !cbs[i].checked
+                }
+
+            }
+
+
+            document.getElementById("firstcb").onclick = function(){
+                var cbs = document.getElementsByName("cb");
+                var firstcb = document.getElementById("firstcb");
+                for (var i = 0; i < cbs.length; i++) {
+                    cbs[i].checked = firstcb.checked;
+                }
+
+            }
+
+            var trs = document.getElementsByTagName("tr");
+            for (var i = 0; i < trs.length; i++) {
+                trs[i].onmouseover = function(){
+                    this.className = "over"
+                }
+
+                trs[i].onmouseout = function(){
+                    this.className = "out"
+                }
+
+            }
+
+        }
+
+    </script>
+
+</head>
+<body>
+
+<table>
+    <caption>Student Info</caption>
+    <tr>
+        <th><input type="checkbox" name="cb" id="firstcb"></th>
+        <th>id</th>
+        <th>name</th>
+        <th>gender</th>
+        <th>action</th>
+    </tr>
+
+    <tr>
+        <td><input type="checkbox" name="cb"></td>
+        <td>1</td>
+        <td>cass</td>
+        <td>male</td>
+        <td><a href="javascript:void(0);">delete</a></td>
+    </tr>
+
+    <tr>
+        <td><input type="checkbox" name="cb"></td>
+        <td>2</td>
+        <td>dean</td>
+        <td>male</td>
+        <td><a href="javascript:void(0);">delete</a></td>
+    </tr>
+
+    <tr>
+        <td><input type="checkbox" name="cb"></td>
+        <td>3</td>
+        <td>lucy</td>
+        <td>female</td>
+        <td><a href="javascript:void(0);">delete</a></td>
+    </tr>
+
+</table>
+<div>
+    <input type="button" id="selectAll" value="All">
+    <input type="button" id="unSelectAll" value="All not">
+    <input type="button" id="selectRev" value="Reverse selection">
+</div>
+</body>
+</html>
+
+//Case 表单校验
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in Page</title>
+    <style>
+        body {
+            background-image: url('image/banner_1.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        * { /*默认所有元素内外边距为0，紧密相连*/
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .outer {
+            width: 900px;
+            height: 500px;
+            border: 8px #EEEEEE solid;
+            background-color: white;
+            margin: 10% auto auto;
+            padding: 30px;
+        }
+
+        .left {
+            float: left;
+
+        }
+
+        .p1 {
+            font-size: 20px;
+            color: #FFD026;
+        }
+
+        .p2 {
+            color: #A6A6A6;
+            font-size: 20px;
+        }
+
+
+
+
+        .center {
+            float: left;
+
+
+        }
+
+        .form {
+            margin-left: 40px;
+            margin-top: 20px;
+
+        }
+
+        .td_left {
+            width: 100px;
+            height: 45px;
+            text-align: right;
+        }
+
+        .td_right {
+            padding-left: 20px; /*格子里面的文本框*/
+        }
+
+        #username, #password, #birthday, #email, #tel, #checkcode {
+            width: 250px;
+            height: 30px;
+            border: 2px solid #A6A6A6;
+            padding-left: 10px;
+            border-radius: 5px;
+        }
+
+        #checkcode {
+            width: 130px;
+        }
+
+        #checkImg {
+            height: 32px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        #button {
+            width: 150px;
+            height: 40px;
+            background-color: #FFD026;
+            border-radius: 5px;
+        }
+
+        .subTon {
+            padding-left: 150px;
+        }
+
+
+
+
+        .right {
+            float: right;
+        }
+
+        .right p {
+            font-size: 16px;
+        }
+
+        .right p a {
+            color: pink;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+    </style>
+
+    <script>
+        window.onload = function () {
+            function checkUsername() {
+                //定义正则表达式判断
+                var reg= /^\w{6,12}$/;
+
+                var username = document.getElementById("username");
+                var flag = reg.test(username.value);
+                var s_username = document.getElementById("s_username");
+                if (!flag) {
+                    s_username.innerHTML = "Pls check";
+                } else {
+                    s_username.innerHTML = "<img width='30' height='20' src='image/gou.png'>";
+
+                }
+                return flag;
+            }
+
+            document.getElementById("username").onblur = checkUsername;
+
+            function checkPassword() {
+                var password = document.getElementById("password").value;
+                //定义正则表达式
+                var reg_password = /^\w{6,12}$/;
+                var flag = reg_password.test(password);
+                var s_password = document.getElementById("s_password");
+
+                if(flag){
+                    s_password.innerHTML = "<img width='30' height='20' src='image/gou.png'/>";
+                }else{
+                    s_password.innerHTML = "Pls check";
+                }
+                return flag;
+            }
+
+            document.getElementById("password").onblur = checkPassword;
+
+            document.getElementById("form").onsubmit = function () {
+                return checkUsername() && checkPassword();
+            }
+
+        }
+    </script>
+
+</head>
+<body background="">
+<div class="outer">
+    <div class="left">
+        <p class="p1">New User?</p>
+        <p class="p2">Create Account</p>
+    </div>
+    <div class="center">
+        <div class="form">
+            <form action="#" id="form" method="get">
+                <table>
+                    <tr>
+                        <td class="td_left"><label for="username">Username</label></td>
+                        <td class="td_right">
+                            <input type="text" name="username" id="username" placeholder="Type your username">
+                            <span id="s_username" class="error"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><label for="password">Password</label></td>
+                        <td class="td_right">
+                            <input type="password" name="password" id="password" placeholder="Type your password">
+                            <span id="s_password" class="error"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><label for="email">Email</label></td>
+                        <td class="td_right"><input type="email" name="email" id="email" placeholder="Type your email"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><label for="tel">Phone</label></td>
+                        <td class="td_right"><input type="text" name="tel" id="tel" placeholder="Type your phone number"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><label>Gender</label></td>
+                        <td class="td_right"><input type="radio" name="gender" value="male"> Male
+                            <input type="radio" name="gender" value="female"> Female
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><label for="birthday">Birthday</label></td>
+                        <td class="td_right"><input type="date" name="birthday" id="birthday" placeholder="Type your birthday"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><label for="checkcode">Verify Code</label></td>
+                        <td class="td_right"><input type="text" name="checkcode" id="checkcode" placeholder="Please verify">
+                            <img id="checkImg" src="image/verify_code.jpg" alt="verify image">
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="2" class="subTon"><input type="submit" id="button" value="注册"></td>
+                    </tr>
+                </table>
+
+
+            </form>
+        </div>
+    </div>
+    <div class="right">
+        <p>Already has an account?&nbsp;&nbsp;<a href="#">Sign in</a></p>
+    </div>
+</div>
+
+</body>
+</html>

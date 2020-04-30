@@ -1,0 +1,210 @@
+//DOM  Document对象
+* 功能：控制html文档的内容
+* 获取页面标签(元素)对象：Element
+	* document.getElementById("id值"):通过元素的id获取元素对象
+<body>
+    <img src="image/banner_1.jpg" id="1">
+
+    <script> //顺序放在需要操作元素后面
+        var element = document.getElementById("1");
+        alert(element);
+    </script>
+</body>
+
+//1.修改属性值：
+<img src="image/banner_1.jpg" id="1">
+    
+    <script>
+        var light = document.getElementById("1");
+        alert("change picture!"); //有阻塞效果，不点确定不会继续执行
+        light.src = "image/banner_2.jpg";
+
+    </script>
+		
+//2. 修改标签体内容
+<h1 id="h1">hello world!</h1>
+
+    <script>
+        var h1 = document.getElementById("h1");
+        alert("about to change");
+        h1.innerHTML = "cass";
+    </script>
+	
+//事件
+//绑定事件  通过标签
+<img src="image/banner_1.jpg" id="1" onclick="alert('got');">
+
+<script>
+        function func() {
+            alert("got");
+        }
+    </script>
+</head>
+<body>
+    <img src="image/banner_1.jpg" id="1" onclick="func();">
+
+//By ID	
+<img src="image/banner_1.jpg" id="1">
+
+    <script>
+        function func() {
+            alert("hello");
+        }
+        var element = document.getElementById("1");
+        element.onclick = func;
+    </script>
+	
+<img src="image/banner_1.jpg" id="1">
+
+    <script>
+        var element = document.getElementById("1");
+        var flag = true;
+        element.onclick = function () {
+            if (flag) {
+                element.src = "image/banner_2.jpg";
+            } else {
+                element.src = "image/banner_1.jpg";
+            }
+            flag = !flag;
+        }
+    </script>	
+	
+	
+//BOM Browser Object Model
+	* Window：窗口对象
+	* Navigator：浏览器对象
+	* Screen：显示器屏幕对象
+	* History：历史记录对象
+	* Location：地址栏对象
+
+//Window 可以直接使用对象，也可以直接调用方法
+window.alert("hello!");
+alert("hello!!!");
+
+var flg1 = confirm("you sure about this?"); //返回值true false
+alert(flg1); //true
+
+//输入对话框
+var s = prompt("pls type your username"); //input cass
+alert(s); //cass
+
+//open 
+<input type="button" id="button" value="open a new page">
+
+var button1 = document.getElementById("button");
+	button1.onclick = function () {
+		open("https://www.baidu.com");
+	}
+	
+//close
+var newWindow;
+var button1 = document.getElementById("button");
+button1.onclick = function () {
+	newWindow = open("https://www.baidu.com");
+
+}
+
+var button2 = document.getElementById("button2");
+button2.onclick = function () {
+	newWindow.close(); //谁调用，关谁
+
+}
+
+//定时器
+//一次性定时器
+setTimeout("alert('boom~');",3000);
+
+function fun() {
+            alert('boom~');
+        }
+setTimeout(fun,3000);
+
+//循环定时器
+setInterval(fun,2000); //every 2s
+
+//clear
+id = setInterval(fun,2000);
+clearInterval(id); //取消了就不会弹出
+
+//轮播图
+<img src="image/banner_1.jpg" width="100%" id="img">
+
+    <script>
+        img = document.getElementById("img");
+        id = 2;
+        function fun() {
+            if (id > 3) {
+                id = 1;
+            }
+            img.src = "image/banner_" + id + ".jpg";
+            id++;
+        }
+
+        setInterval(fun, 3000)
+
+    </script>
+	
+//地址栏对象 location
+reload(); //刷新页面
+btn = document.getElementById("btn");
+btn.onclick = function () {
+	alert(location.reload());
+
+}
+ location.href //http://localhost:63342/JDBCDataSource/HTML_01/lunbo.html?_ijt=rfhehjv74lpa86qgduvcvt1muc
+ location.href = "http://www.baidu.com" //更改网站
+ 
+ //自动跳转首页
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        p {
+            text-align: center;
+        }
+
+        #sp {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <span id="sp">5</span>秒后，自动跳转到首页...
+    </p>
+
+    <script>
+        sp = document.getElementById("sp");
+        t = 4;
+        function f() {
+            if (t >= 0) {
+                sp.innerHTML = t;
+                t--;
+            } else {
+                location.href = "http://www.baidu.com";
+            }
+        }
+
+        setInterval(f, 1000);
+    </script>
+
+</body>
+</html>
+
+//history
+History：历史记录对象
+1. 创建(获取)：
+	1. window.history
+	2. history
+
+2. 方法：
+	* back()	加载 history 列表中的前一个 URL。
+	* forward()	加载 history 列表中的下一个 URL。
+	* go(参数)	加载 history 列表中的某个具体页面。
+		* 参数：
+			* 正数：前进几个历史记录
+			* 负数：后退几个历史记录
+3. 属性：
+	* length	返回当前窗口历史列表中的 URL 数量。
